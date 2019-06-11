@@ -2,7 +2,7 @@
 
 ## Description
 
-Set of my awesome LeetCode solutions.
+This is my set of awesome solutions for the LeetCode problems.
 
 ## Contents
 
