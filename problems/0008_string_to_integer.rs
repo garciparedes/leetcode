@@ -1,6 +1,12 @@
-use std::cmp::Ordering;
-
 struct Solution {}
+
+fn main() {
+    let input = "+-12";
+    let output = Solution::my_atoi(input.to_string());
+    println!("The solution of \"{}\" is {}", input, output)
+}
+
+use std::cmp::Ordering;
 
 impl Solution {
     pub fn my_atoi(str: String) -> i32 {
@@ -34,6 +40,7 @@ impl Computation {
     }
 
     fn _process_digit(&mut self, digit: i32) -> bool {
+        self.consumed_blank = true;
         match self._shift(digit) {
             Some(x) => {
                 self.unsigned = x;
@@ -60,8 +67,8 @@ impl Computation {
     }
 
     fn _process_non_digit(&mut self, character: char) -> bool {
-        if !self.consumed_blank {
-            false;
+        if self.consumed_blank {
+            return false;
         }
         match character {
             ' ' => true,
@@ -79,12 +86,6 @@ impl Computation {
     }
 
     fn _result(self) -> i32 {
-        self.sign * self.unsigned
+        return self.sign * self.unsigned;
     }
-}
-
-fn main() {
-    let input = "  -22 lasdada";
-    let output = Solution::my_atoi(input.to_string());
-    println!("The solution of \"{}\" is {}", input, output)
 }
