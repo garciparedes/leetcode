@@ -24,35 +24,35 @@ impl Computation {
     fn compute(str: String) -> i32 {
         let mut computation = Computation { unsigned: 0, consumed_blank: false, sign: 1 };
         for c in str.chars() {
-            if computation._process(c) {
+            if computation.process(c) {
                 continue;
             };
             break;
         }
-        return computation._result();
+        return computation.result();
     }
 
-    fn _process(&mut self, character: char) -> bool {
+    fn process(&mut self, character: char) -> bool {
         return match character.to_digit(10) {
-            Some(d) => self._process_digit(d as i32),
-            None => self._process_non_digit(character),
+            Some(d) => self.process_digit(d as i32),
+            None => self.process_non_digit(character),
         };
     }
 
-    fn _process_digit(&mut self, digit: i32) -> bool {
+    fn process_digit(&mut self, digit: i32) -> bool {
         self.consumed_blank = true;
-        match self._shift(digit) {
+        match self.shift(digit) {
             Some(x) => {
                 self.unsigned = x;
                 true
             }
             None => {
-                self.unsigned = self._process_overflow();
+                self.unsigned = self.process_overflow();
                 false
             }
         }
     }
-    fn _process_overflow(&mut self) -> i32 {
+    fn process_overflow(&mut self) -> i32 {
         match self.sign.cmp(&0) {
             Ordering::Greater => std::i32::MAX,
             Ordering::Less => std::i32::MIN,
@@ -60,13 +60,13 @@ impl Computation {
         }
     }
 
-    fn _shift(&mut self, current: i32) -> Option<i32> {
+    fn shift(&mut self, current: i32) -> Option<i32> {
         Option::Some(self.unsigned)
             .and_then(|x| x.checked_mul(10))
             .and_then(|x| x.checked_add(current % 10))
     }
 
-    fn _process_non_digit(&mut self, character: char) -> bool {
+    fn process_non_digit(&mut self, character: char) -> bool {
         if self.consumed_blank {
             return false;
         }
@@ -85,7 +85,7 @@ impl Computation {
         }
     }
 
-    fn _result(self) -> i32 {
+    fn result(self) -> i32 {
         return self.sign * self.unsigned;
     }
 }
