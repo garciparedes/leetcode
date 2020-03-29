@@ -22,7 +22,7 @@ struct Computation {
 
 impl Computation {
     fn compute(str: String) -> i32 {
-        let mut computation = Computation { unsigned: 0, consumed_blank: false, sign: 1 };
+        let mut computation = Computation::new();
         for c in str.chars() {
             if computation.process(c) {
                 continue;
@@ -30,6 +30,10 @@ impl Computation {
             break;
         }
         return computation.result();
+    }
+
+    fn new() -> Self {
+        Computation { unsigned: 0, consumed_blank: false, sign: 1 }
     }
 
     fn process(&mut self, character: char) -> bool {
