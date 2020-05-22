@@ -2,7 +2,7 @@ use std::cmp;
 
 impl Solution {
     pub fn max_sub_array(nums: Vec<i32>) -> i32 {
-        let mut maximum: i32 = 0;
+        let mut maximum: i32 = std::i32::MIN;
         let mut positive: i32 = 0;
         let mut negative: i32 = 0;
         let mut j: usize = 0;
@@ -13,7 +13,7 @@ impl Solution {
             } else {
                 positive += v;   
             }
-            while j <= i && positive < negative {
+            while j < i && (nums[j] < 0 || positive < negative) {
                 let vv = nums[j];
                 j += 1;
                 if vv < 0 {
