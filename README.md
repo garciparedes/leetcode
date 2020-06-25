@@ -4,10 +4,6 @@
 
 This is my set of awesome solutions for the LeetCode problems.
 
-## Contents
-
-  * TODO: Write contents
-
 ## Contributors
 
   * Sergio García Prado - [@garciparedes](http://garciparedes.me)
