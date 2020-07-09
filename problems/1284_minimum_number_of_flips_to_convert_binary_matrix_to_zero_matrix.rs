@@ -41,14 +41,10 @@ impl Solution {
         if position.1 < m - 1 {
             mat[position.0][position.1 + 1] = 1 - mat[position.0][position.1 + 1];
         }
-        let mut count = i32::max_value();
-
-        if memory.contains_key(&mat) {
-            let another = memory.get(&mat).unwrap();
-            count = cmp::min(count, *another);
+            
+        let mut count = memory.entry(mat.clone()).or_insert_with(i32::max_value).clone();
+        if count != i32::max_value() {
             return count;
-        } else {
-            memory.insert(mat.clone(), count);
         }
 
         for i in 0..n {
@@ -77,4 +73,10 @@ impl Solution {
         }
         return true;
     }
+}
+
+struct Solution {  }
+
+fn main() {
+    println!("{:?}", Solution::min_flips(vec![vec![0,0],vec![0, 1]]));
 }
