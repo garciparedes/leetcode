@@ -75,8 +75,3 @@ impl Solution {
     }
 }
 
-struct Solution {  }
-
-fn main() {
-    println!("{:?}", Solution::min_flips(vec![vec![0,0],vec![0, 1]]));
-}
