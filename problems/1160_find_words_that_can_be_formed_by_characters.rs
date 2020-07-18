@@ -7,7 +7,7 @@ impl Solution {
         let mut count = 0;
         for word in words.into_iter() {
             let current = Self::character_frequencies(&word);
-            let mut good = false;
+            let mut good = true;
             for (character, count) in current.into_iter() {
                 good = match available.get(&character) {
                     Some(&c) => c >= count,
