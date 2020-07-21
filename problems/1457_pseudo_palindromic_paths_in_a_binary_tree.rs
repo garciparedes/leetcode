@@ -22,10 +22,10 @@ use std::collections::HashMap;
 
 impl Solution {
     pub fn pseudo_palindromic_paths (root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-        return Self::dfs(root, HashMap::new(), 0);
+        return Self::dfs(&root, HashMap::new(), 0);
     }
     
-    fn dfs(root: Option<Rc<RefCell<TreeNode>>>, mut counter: HashMap<i32, usize>, n: usize) -> i32 {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, mut counter: HashMap<i32, usize>, n: usize) -> i32 {
         match root {
             Some(node) => {
                 *counter.entry(node.borrow().val).or_insert(0) += 1;
@@ -39,8 +39,8 @@ impl Solution {
                 }
                 
                 return (
-                    Self::dfs(node.borrow().left.clone(), counter.clone(), n + 1) 
-                    + Self::dfs(node.borrow().right.clone(), counter, n + 1) 
+                    Self::dfs(&node.borrow().left, counter.clone(), n + 1) 
+                    + Self::dfs(&node.borrow().right, counter, n + 1) 
                 );
             }
             None => 0,
