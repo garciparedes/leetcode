@@ -22,8 +22,12 @@ use std::cmp;
 
 impl Solution {
     pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        Self::rec(&root)
+    }
+    
+    fn rec(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
         match root {
-            Some(node) => 1 + cmp::max(Self::max_depth(node.borrow().left.clone()), Self::max_depth(node.borrow().right.clone())),
+            Some(node) => 1 + cmp::max(Self::rec(&node.borrow().left), Self::rec(&node.borrow().right)),
             None => 0,
         }
     }
