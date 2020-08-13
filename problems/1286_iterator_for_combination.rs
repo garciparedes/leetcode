@@ -1,6 +1,8 @@
+use std::ops::Range;
+
 struct CombinationIterator {
-    indexes: Vec<usize>,
     characters: Vec<char>,
+    indexes: Vec<usize>,
 }
 
 
@@ -11,43 +13,44 @@ struct CombinationIterator {
 impl CombinationIterator {
 
     fn new(characters: String, combinationLength: i32) -> Self {
-        Self {
+        CombinationIterator { 
             characters: characters.chars().collect(), 
             indexes: (0..combinationLength as usize).collect(),
         }
     }
     
     fn next(&mut self) -> String {
-        let item = self.indexes
+        let result = self
+            .indexes
             .iter()
             .map(|&index| self.characters[index])
             .collect();
+        
         self.increment();
-        return item
+        return result;
     }
     
-    fn increment(&mut self) {        
+    fn increment(&mut self) {
         let mut i = self.indexes.len() - 1;
-        self.indexes[i] += 1;
-        while i > 0 && !(self.indexes[i] < self.characters.len() - (self.indexes.len() - (i + 1))) {
+        while i > 0 && self.indexes[i] == self.characters.len() - (self.indexes.len() - i) {
             i -= 1;
-            self.indexes[i] += 1;
-            for j in i + 1..self.indexes.len() {
-                self.indexes[j] = self.indexes[j - 1] + 1;   
-            }
         }
+        
+        self.indexes[i] += 1;
+        for j in i + 1 .. self.indexes.len() {
+            self.indexes[j] = self.indexes[j - 1] + 1;
+        } 
     }
     
     fn has_next(&self) -> bool {
-        return self.indexes
+        self.indexes
             .iter()
-            .rev()
-            .enumerate()
-            .all(|(i, &index)| index + i < self.characters.len());
+            .zip(self.threshold())
+            .all(|(&a, b)| a <= b)
     }
     
-    fn offset(&self) -> usize {
-        self.characters.len() - self.indexes.len()
+    fn threshold(&self) -> Range<usize> {
+        (self.characters.len() - self.indexes.len())..self.characters.len()
     }
 }
 
@@ -57,4 +60,3 @@ impl CombinationIterator {
  * let ret_1: String = obj.next();
  * let ret_2: bool = obj.has_next();
  */
-
