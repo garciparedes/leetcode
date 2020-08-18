@@ -3,13 +3,12 @@ impl Solution {
         if n == 1 {
             return (0..10).collect();
         }
-        
         let n = n as usize;
         let k = k as i8;
         
         let mut result = Vec::new();
         for i in 1..10 {
-            result.extend(Self::rec(n, k, vec![i]).into_iter());
+            Self::rec(n, k, vec![i], &mut result);
         }
         
         return result
@@ -24,19 +23,18 @@ impl Solution {
             .collect();
     }
     
-    fn rec(n: usize, k: i8, current: Vec<i8>) -> Vec<Vec<i8>> {
+    fn rec(n: usize, k: i8, current: Vec<i8>, result: &mut Vec<Vec<i8>>) {
         if current.len() == n {
-            return vec![current];
+            result.push(current);
+            return;
         }
-        let mut result = Vec::new();
         for i in 0..10 {
             if (i - current[current.len() - 1]).abs() != k {
                 continue;
             }
             let mut now = current.clone();
             now.push(i);
-            result.extend(Self::rec(n, k, now).into_iter());
+            Self::rec(n, k, now, result);
         }
-        return result;
     }
 }
