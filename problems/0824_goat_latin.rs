@@ -24,10 +24,7 @@ impl Solution {
     }
     
     fn is_vowel(c: char) -> bool {
-        c == 'a' || c == 'A'
-        || c == 'e' || c == 'E'
-        || c == 'i' || c == 'I'
-        || c == 'o' || c == 'O'
-        || c == 'u' || c == 'U'
+        ['a', 'A', 'e', 'E', 'i', 'I', 'o', 'O', 'u', 'U'].contains(&c)
     }
 }
+
