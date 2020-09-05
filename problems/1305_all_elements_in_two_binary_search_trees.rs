@@ -18,38 +18,46 @@
 // }
 use std::rc::Rc;
 use std::cell::RefCell;
-
 impl Solution {
     pub fn get_all_elements(root1: Option<Rc<RefCell<TreeNode>>>, root2: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
-        let mut base = Solution::extract(root1);
-        let mut other = Solution::extract(root2);
+        let list1 = Self::dfs(&root1);
+        let list2 = Self::dfs(&root2);
         
-        let mut i = 0;
-        for item in other {
-            while i < base.len() && base[i] < item  {
-                i +=1;
-            }
-            base.insert(i, item);
-        }
-        
-        return base;
+        return Self::merge(&list1, &list2);
     }
     
-    
-    fn extract(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
         match root {
             Some(node) => {
-                let mut base = Solution::extract(node.borrow().left.clone());
-                let mut other = Solution::extract(node.borrow().right.clone());
-                
-                base.push(node.borrow().val);
-                base.append(&mut other);
-                
-                return base;
-                
+                let mut ans = Self::dfs(&node.borrow().left);
+                ans.push(node.borrow().val);
+                ans.extend(Self::dfs(&node.borrow().right).iter());
+                return ans;
             },
             None => Vec::new(),
+        }       
+    }
+    
+    fn merge(list1: &Vec<i32>, list2: &Vec<i32>) -> Vec<i32> {
+        let (mut i1, mut i2) = (0, 0);
+        let mut ans = Vec::new();
+        while i1 < list1.len() || i2 < list2.len() {
+            if i1 < list1.len() && i2 < list2.len() {
+                if list1[i1] < list2[i2] {
+                    ans.push(list1[i1]);
+                    i1 += 1;
+                } else {
+                    ans.push(list2[i2]);
+                    i2 += 1;
+                }
+            } else if i1 < list1.len() {
+                ans.push(list1[i1]);
+                i1 += 1;
+            } else {
+                ans.push(list2[i2]);
+                i2 += 1;
+            }
         }
-        
+        return ans;
     }
 }
