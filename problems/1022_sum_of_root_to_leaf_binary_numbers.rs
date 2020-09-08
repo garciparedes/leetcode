@@ -18,37 +18,35 @@
 // }
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::cmp;
-
 impl Solution {
     pub fn sum_root_to_leaf(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
         Self::dfs(&root, Vec::new())
     }
     
-    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, mut bits: Vec<i32>) -> i32 {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, mut bits: Vec<bool>) -> i32{
         match root {
             Some(node) => {
-                bits.push(node.borrow().val);
-                
+                bits.push(node.borrow().val == 1);
                 if node.borrow().left.is_none() && node.borrow().right.is_none() {
-                    return Self::to_number(&bits);
+                    return Self::bin_to_dec(&bits);
                 }
-                                
                 return (
                     Self::dfs(&node.borrow().left, bits.clone()) 
                     + Self::dfs(&node.borrow().right, bits)
                 );
-            }
+            },
             None => 0,
         }
     }
     
-    fn to_number(bits: &Vec<i32>) -> i32 {
-        bits
-            .into_iter()
-            .rev()
-            .enumerate()
-            .fold(0, |acc, (i, v)| acc + v * i32::pow(2, i as u32))
+    fn bin_to_dec(bits: &Vec<bool>) -> i32 {
+        let mut ans = 0;
+        for (exponent, digit) in bits.iter().rev().enumerate() {
+            if !digit {
+                continue;
+            }
+            ans += i32::pow(2, exponent as u32);
+        }
+        return ans;
     }
-        
 }
