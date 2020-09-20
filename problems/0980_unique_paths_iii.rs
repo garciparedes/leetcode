@@ -26,8 +26,8 @@ impl Solution {
                 || position.1 < 0 
                 || position.0 >= grid.len() as isize 
                 || position.1 >= grid[0].len() as isize 
-                || grid[position.0 as usize][position.1 as usize] == 3
                 || grid[position.0 as usize][position.1 as usize] == -1
+                || grid[position.0 as usize][position.1 as usize] == -2
             ) {
                 return 0;
             }
@@ -36,7 +36,7 @@ impl Solution {
                 return 1;
             }
             
-            grid[position.0 as usize][position.1 as usize] = 3;
+            grid[position.0 as usize][position.1 as usize] = -2;
             let ans = (
                 Self::rec(grid, (position.0, position.1 - 1), ending, steps + 1) 
                 + Self::rec(grid, (position.0, position.1 + 1), ending, steps + 1) 
