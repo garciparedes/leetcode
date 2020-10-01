@@ -4,22 +4,25 @@ struct RecentCounter {
     pings: VecDeque<i32>,
 }
 
+
+/** 
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
 impl RecentCounter {
 
     fn new() -> Self {
-        RecentCounter {
-            pings: VecDeque::new(), 
-        }
+        RecentCounter { pings: VecDeque::new() }
     }
     
     fn ping(&mut self, t: i32) -> i32 {
-        self.pings.push_back(t);
-        while let Some(&v) = self.pings.front() {
-            if v >= t - 3000 {
+        while let Some(last) = self.pings.back() {
+            if t - last <= 3000 {
                 break;
             }
-            self.pings.pop_front();
+            self.pings.pop_back();
         }
+        self.pings.push_front(t);
         return self.pings.len() as i32;
     }
 }
