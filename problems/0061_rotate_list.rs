@@ -40,9 +40,7 @@ impl Solution {
         }
     }
     
-    fn search(
-        head: Option<Box<ListNode>>, depth: usize
-    ) -> Option<Box<ListNode>> {
+    fn search(head: Option<Box<ListNode>>, depth: usize) -> Option<Box<ListNode>> {
         match head {
             Some(node) => {
                 if depth == 0 {
