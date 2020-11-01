@@ -15,23 +15,22 @@
 //   }
 // }
 impl Solution {
-    pub fn get_decimal_value(head: Option<Box<ListNode>>) -> i32 {
-        let mut degree = 0; 
-        let mut current = head.clone();
-        while let Some(node) = current {
-            degree += 1;
-            current = node.next;
+    pub fn get_decimal_value(mut head: Option<Box<ListNode>>) -> i32 {
+        let mut n = 0;
+        let mut head2 = &head;
+        while let Some(node) = head2 {
+            n += 1;
+            head2 = &node.next;
         }
         
-        let mut value = 0;
-        let mut current = head.clone();
-        for i in (0..degree).rev() {
-            let node = current.unwrap(); 
-            if node.val != 0 {
-                value += 2i32.pow(i);   
+        let mut ans = 0;
+        while let Some(node) = head {
+            n -= 1;
+            if node.val == 1 {
+                ans += i32::pow(2, n);
             }
-            current = node.next;
+            head = node.next;
         }
-        return value;
+        return ans;
     }
 }
