@@ -16,26 +16,30 @@
 //     }
 //   }
 // }
-
 use std::rc::Rc;
 use std::cell::RefCell;
-
 impl Solution {
-    pub fn range_sum_bst(root: Option<Rc<RefCell<TreeNode>>>, l: i32, r: i32) -> i32 {
-        return match root {
+    pub fn range_sum_bst(root: Option<Rc<RefCell<TreeNode>>>, low: i32, high: i32) -> i32 {
+        Self::dfs(&root, low, high)
+    }
+    
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, low: i32, high: i32) -> i32 {
+        match root {
             Some(node) => {
-                let mut val = node.borrow().val;
-                let left = node.borrow().left.clone();
-                let right = node.borrow().right.clone();
-                
-                if val < l || r < val {
-                    val = 0;
+                let val = node.borrow().val;
+                let mut ans = 0;
+                if low <= val && val <= high {
+                    ans += val;
                 }
-
-                return val + Solution::range_sum_bst(left, l, r) + Solution::range_sum_bst(right, l, r);     
+                if val > low {
+                    ans += Self::dfs(&node.borrow().left, low, high);
+                }
+                if val < high {
+                    ans += Self::dfs(&node.borrow().right, low, high);
+                }
+                return ans;
             },
             None => 0,
-        };
-        
+        }
     }
 }
