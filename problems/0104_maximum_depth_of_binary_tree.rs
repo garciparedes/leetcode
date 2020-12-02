@@ -16,18 +16,19 @@
 //     }
 //   }
 // }
+use std::cmp;
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::cmp;
 
 impl Solution {
     pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-        Self::rec(&root)
-    }
-    
-    fn rec(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
         match root {
-            Some(node) => 1 + cmp::max(Self::rec(&node.borrow().left), Self::rec(&node.borrow().right)),
+            Some(node) => {
+                let left = node.borrow_mut().left.take();
+                let right = node.borrow_mut().right.take();
+                
+                return 1 + cmp::max(Self::max_depth(left), Self::max_depth(right));
+            },
             None => 0,
         }
     }
