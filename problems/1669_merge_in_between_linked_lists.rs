@@ -31,10 +31,7 @@ impl Solution {
         }
         mem::swap(&mut current.next, &mut list2);
         
-        loop {
-            if current.next.is_none() {
-                break;
-            }
+        while current.next.is_some() {
             current = current.next.as_mut().unwrap();
         }
 
