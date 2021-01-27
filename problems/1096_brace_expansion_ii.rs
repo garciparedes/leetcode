@@ -3,6 +3,7 @@ use std::collections::HashSet;
 impl Solution {
     pub fn brace_expansion_ii(expression: String) -> Vec<String> {
         let expression: Vec<char> = expression.chars().collect();
+        
         let tokenized = Token::tokenize(&expression);        
         let expanded = tokenized.expand();
 
